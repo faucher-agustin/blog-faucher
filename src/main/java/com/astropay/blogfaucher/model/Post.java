@@ -1,5 +1,7 @@
 package com.astropay.blogfaucher.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -26,9 +28,20 @@ public class Post {
     private String body;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> comments;
 
     @Column(name = "user_id")
     private Long userId;
 
+    public Post(Long id, String title, String body, Long userId) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.userId = userId;
+    }
+
+    public Post() {
+
+    }
 }

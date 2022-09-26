@@ -1,10 +1,15 @@
 package com.astropay.blogfaucher.controller;
 
 import com.astropay.blogfaucher.exception.NotFoundException;
+import com.astropay.blogfaucher.model.Comment;
 import com.astropay.blogfaucher.model.Post;
+import com.astropay.blogfaucher.service.CommentService;
 import com.astropay.blogfaucher.service.PostService;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,12 +28,14 @@ import java.util.Map;
 @RestController
 @RequestMapping (value = "/v1/blog/posts")
 @Validated
-public class PostController {
+public class BlogController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public BlogController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +52,15 @@ public class PostController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Post> getPostById(@PathVariable @Min(0) Long id) throws NotFoundException {
         return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable @Min(0) Long id) throws NotFoundException {
+        return new ResponseEntity<>(commentService.getCommentsByPostId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> getPostByTitle(@RequestParam @Size(max = 1000) @NotBlank String title) {
+        return new ResponseEntity<>(postService.getPostsByTitle(title), HttpStatus.OK);
     }
 }

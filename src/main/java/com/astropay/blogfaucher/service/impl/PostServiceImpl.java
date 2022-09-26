@@ -29,4 +29,9 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(Long id) throws NotFoundException {
         return postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post not found."));
     }
+
+    @Override
+    public List<Post> getPostsByTitle(String title) {
+        return postRepository.findByTitleContaining(title);
+    }
 }

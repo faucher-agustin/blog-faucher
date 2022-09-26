@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class ParserUtils {
 
+    private ParserUtils() {}
     public static String toJsonString(Map<String, Object> map) {
         Gson gson = new Gson();
         Type gsonType = new TypeToken<HashMap>(){}.getType();

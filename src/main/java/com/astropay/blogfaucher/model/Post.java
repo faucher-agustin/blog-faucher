@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Table(name = "posts")
 @Getter
@@ -33,5 +36,14 @@ public class Post {
         this.title = title;
         this.body = body;
         this.userId = userId;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("id", this.id);
+        map.put("title", this.title);
+        map.put("body", this.body);
+        map.put("userId", this.userId);
+        return map;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,14 @@ public class ControllerExceptionHandler {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException iae) {
         Map<String, Object> exceptionBody = new HashMap<>();
         exceptionBody.put("message", iae.getMessage());
+        exceptionBody.put("status" , HttpStatus.BAD_REQUEST.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ParserUtils.toJsonString(exceptionBody));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException cve) {
+        Map<String, Object> exceptionBody = new HashMap<>();
+        exceptionBody.put("message", cve.getMessage());
         exceptionBody.put("status" , HttpStatus.BAD_REQUEST.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ParserUtils.toJsonString(exceptionBody));
     }

@@ -1,8 +1,8 @@
 package com.astropay.blogfaucher.service.impl;
 
 import com.astropay.blogfaucher.model.Post;
-
 import com.astropay.blogfaucher.repository.PostRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

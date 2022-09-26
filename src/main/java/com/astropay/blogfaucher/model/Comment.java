@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "comments")
@@ -29,4 +31,14 @@ public class Comment {
     private String email;
     @Column(name = "post_id")
     private Long postId;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>(5);
+        map.put("id", this.id);
+        map.put("name", this.name);
+        map.put("body", this.body);
+        map.put("email", this.email);
+        map.put("postId", this.postId);
+        return map;
+    }
 }

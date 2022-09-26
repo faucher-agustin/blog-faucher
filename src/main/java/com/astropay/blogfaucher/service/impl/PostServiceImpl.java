@@ -31,7 +31,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsByTitle(String title) {
-        return postRepository.findByTitleContaining(title);
+    public List<Post> getPostsByTitle(String title) throws NotFoundException {
+        List<Post> posts = postRepository.findByTitleContaining(title);
+        if (posts.isEmpty()) {
+            throw new NotFoundException(String.format("Posts not found with title containing %s", title));
+        }
+        return posts;
     }
 }

@@ -75,4 +75,24 @@ class PostServiceImplTest {
 
         verify(postRepository, times(1)).findById(1L);
     }
+
+    @Test
+    void testGetPostByTitleShouldReturnAListOfPosts() throws NotFoundException {
+        List<Post> posts = List.of(new Post(1L, "title 1", "Este es un body", 1L),
+                                   new Post(2L, "title 2", "Este es otro body", 1L));
+        when(postRepository.findByTitleContaining("title")).thenReturn(posts);
+
+        List<Post> actual = postService.getPostsByTitle("title");
+
+        assertEquals(posts, actual);
+        verify(postRepository, times(1)).findByTitleContaining("title");
+    }
+    @Test
+    void testGetPostByTitleShouldThrowNotFoundExceptionWhenNoPostFound() throws NotFoundException {
+        List<Post> posts = new ArrayList<>();
+        when(postRepository.findByTitleContaining("title")).thenReturn(posts);
+
+        assertThrows(NotFoundException.class, () -> postService.getPostsByTitle("title"));
+        verify(postRepository, times(1)).findByTitleContaining("title");
+    }
 }

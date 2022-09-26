@@ -9,5 +9,5 @@ public interface PostService {
     List<Post> getAllPostsPaginated(int limit, int offset);
     Post getPostById(Long id) throws NotFoundException;
 
-    List<Post> getPostsByTitle(String title);
+    List<Post> getPostsByTitle(String title) throws NotFoundException;
 }

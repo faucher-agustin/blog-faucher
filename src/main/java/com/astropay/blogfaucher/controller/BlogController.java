@@ -6,10 +6,12 @@ import com.astropay.blogfaucher.model.Post;
 import com.astropay.blogfaucher.service.CommentService;
 import com.astropay.blogfaucher.service.PostService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,10 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping (value = "/v1/blog/posts")
@@ -39,7 +37,8 @@ public class BlogController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getAllPost(@RequestParam(required = false, defaultValue = "10") @Min(1)  Integer limit, @RequestParam(required = false, defaultValue = "0") @Min(0) Integer page) {
+    public ResponseEntity<Map<String, Object>> getAllPost(@RequestParam(required = false, defaultValue = "10") @Min(value = 1, message = "limit must be greater than 0")  Integer limit,
+                                                          @RequestParam(required = false, defaultValue = "0") @Min(value = 0, message = "page must be greater than, or equals to 0") Integer page) {
         List<Post> posts = postService.getAllPostsPaginated(limit, page);
         Map<String, Object> response = new HashMap<>();
         response.put("limit", limit);
@@ -50,17 +49,17 @@ public class BlogController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Post> getPostById(@PathVariable @Min(0) Long id) throws NotFoundException {
+    public ResponseEntity<Post> getPostById(@PathVariable @Min(value = 0, message = "Post Id must be greater than, or equal to 0") Long id) throws NotFoundException {
         return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable @Min(0) Long id) throws NotFoundException {
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable @Min(value = 0, message = "Post Id must be greater than, or equal to 0") Long id) throws NotFoundException {
         return new ResponseEntity<>(commentService.getCommentsByPostId(id), HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Post>> getPostByTitle(@RequestParam @Size(max = 1000) @NotBlank String title) {
+    public ResponseEntity<List<Post>> getPostByTitle(@RequestParam() @NotBlank String title) throws NotFoundException {
         return new ResponseEntity<>(postService.getPostsByTitle(title), HttpStatus.OK);
     }
 }

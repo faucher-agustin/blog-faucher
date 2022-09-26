@@ -4,9 +4,11 @@ import com.astropay.blogfaucher.exception.NotFoundException;
 import com.astropay.blogfaucher.model.Comment;
 import com.astropay.blogfaucher.repository.CommentRepository;
 import com.astropay.blogfaucher.service.CommentService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -19,6 +21,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getCommentsByPostId(Long postId) throws NotFoundException {
-        return commentRepository.findByPostId(postId).get();
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        if (comments.isEmpty()) {
+            throw new NotFoundException(String.format("Comments not found for post %s", postId));
+        }
+        return comments;
     }
 }

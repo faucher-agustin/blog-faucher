@@ -1,6 +1,6 @@
 package com.astropay.blogfaucher.controller;
 
-import com.astropay.blogfaucher.ParserUtils;
+import com.astropay.blogfaucher.utils.ParserUtils;
 import com.astropay.blogfaucher.model.Post;
 import com.astropay.blogfaucher.service.PostService;
 

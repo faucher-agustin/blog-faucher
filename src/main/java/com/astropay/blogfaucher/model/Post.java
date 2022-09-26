@@ -1,22 +1,20 @@
 package com.astropay.blogfaucher.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;import java.util.List;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "posts")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -27,10 +25,6 @@ public class Post {
     @Type(type="text")
     private String body;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Comment> comments;
-
     @Column(name = "user_id")
     private Long userId;
 
@@ -39,9 +33,5 @@ public class Post {
         this.title = title;
         this.body = body;
         this.userId = userId;
-    }
-
-    public Post() {
-
     }
 }

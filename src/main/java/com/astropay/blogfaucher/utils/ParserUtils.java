@@ -1,4 +1,4 @@
-package com.astropay.blogfaucher;
+package com.astropay.blogfaucher.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

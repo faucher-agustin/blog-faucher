@@ -58,7 +58,7 @@ public class BlogController {
         return new ResponseEntity<>(commentService.getCommentsByPostId(id), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Post>> getPostByTitle(@RequestParam() @NotBlank String title) throws NotFoundException {
         return new ResponseEntity<>(postService.getPostsByTitle(title), HttpStatus.OK);
     }
